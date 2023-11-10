@@ -10,10 +10,6 @@
     font-family: var(--font2);
 }
 
-.fs-c {
-    font-size: 3.5rem;
-}
-
 .ms-c {
     margin-left: 11rem;
 }
@@ -41,10 +37,6 @@
 
 .bic {
     cursor: pointer;
-}
-
-.h-16 {
-    height: 16px;
 }
 
 .white {
