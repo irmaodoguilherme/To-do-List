@@ -1,0 +1,52 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat&display=swap');
+@import url("https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css");
+
+:root{
+    --font1: 'Edu TAS Beginner', cursive;
+    --font2: 'Montserrat', sans-serif;
+}
+
+.text-2 {
+    font-family: var(--font2);
+}
+
+.fs-c {
+    font-size: 3.5rem;
+}
+
+.ms-c {
+    margin-left: 11rem;
+}
+
+.me-c {
+    margin-right: 10.7rem;
+}
+
+* {
+    padding: 0%;
+    margin: 0%;
+}
+
+::marker {
+    content: none;
+}
+
+.w-8 {
+    width: 8rem;
+}
+
+.square-button {
+    --bs-btn-border-radius: 0;
+}
+
+.bic {
+    cursor: pointer;
+}
+
+.h-16 {
+    height: 16px;
+}
+
+.white {
+    color: #ffffff;
+}
