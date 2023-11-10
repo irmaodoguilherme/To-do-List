@@ -1,69 +1,56 @@
-const body = document.body
-const ul = document.querySelector('#to-do-list')
 const form = document.querySelector('form')
 const input = document.querySelector('input')
-const sun = document.querySelector('#sun')
-const moon = document.querySelector('#moon')
+const ul = document.querySelector('ul')
 
-const insertClassesIntoElements = (firstElement, secondElement) => {
-    firstElement.classList.add('bi')
-    firstElement.classList.add('bi-x-square')
-    firstElement.classList.add('bic')
+input.focus()
 
-    secondElement.classList.add('d-flex')
-    secondElement.classList.add('gap-2')
-}
+let li;
+let i;
 
-const createElement = value => {
-    const li = document.createElement('li')
-    const i = document.createElement('i')
+const createItem = () => {
+    li = document.createElement('li')
+    i = document.createElement('i')
 
-    insertClassesIntoElements(i, li)
+    li.textContent = input.value
 
-    li.textContent = value
+    li.classList.add('d-flex')
+    li.classList.add('gap-2')
+
+    i.classList.add('bi')
+    i.classList.add('bi-x-square')
+    i.style.cursor = 'pointer'
+
     li.append(i)
-
-    return li
 }
 
-const insertItemIntoList = value => {
-    const li = createElement(value)
-
+const clearInputBox = () => {
     input.value = ''
     input.focus()
+}
 
+const addItemToTheList = () => {
     ul.append(li)
 }
 
-const checkInputValue = event => {
+form.addEventListener('submit', event => {
     event.preventDefault()
 
-    const inputValue = event.target.input.value
-
-    if (!inputValue) {
+    if(!input.value) {
         return
     }
 
-    insertItemIntoList(inputValue)
-}
+    createItem()
+    clearInputBox()
+    addItemToTheList()
+})
 
-const removeClickedElement = event => {
-    clickedElement = event.target
-    clickedElementTagName = clickedElement.tagName
-    clickedElementParent = clickedElement.parentElement
+ul.addEventListener('click', event => {
+    const clickedElementTagName = event.target.tagName
+    const clickedElementParent = event.target.parentElement
 
-    if(clickedElementTagName === 'I') {
+    const elementIsAnIcon = clickedElementTagName === 'I'
+
+    if(elementIsAnIcon) {
         clickedElementParent.remove()
     }
-}
-
-form.addEventListener('submit', checkInputValue)
-ul.addEventListener('click', removeClickedElement)
-sun.addEventListener('click', () => {
-    sun.classList.add('d-none')
-    moon.classList.remove('d-none')
-})
-moon.addEventListener('click', () => {
-    moon.classList.add('d-none')
-    sun.classList.remove('d-none')
 })
