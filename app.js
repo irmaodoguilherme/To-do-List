@@ -1,56 +1,75 @@
-const form = document.querySelector('form')
-const input = document.querySelector('input')
-const ul = document.querySelector('ul')
+const inputAddTodo = document.querySelector('.form-add-todo')
+const todosContainer = document.querySelector('.todos-container')
+const inputSearchTodo = document.querySelector('.form-search')
 
-input.focus()
+const resetForm = event => event.target.reset()
 
-let li;
-let i;
+const getTodo = inputValue => `
+    <li class="list-group-item d-flex justify-content-between align-items-center" data-todo="${inputValue}">
+        <span>${inputValue}</span>
+        <i class="far fa-trash-alt" data-trash="${inputValue}"></i>
+    </li>
+`
 
-const createItem = () => {
-    li = document.createElement('li')
-    i = document.createElement('i')
-
-    li.textContent = input.value
-
-    li.classList.add('d-flex')
-    li.classList.add('gap-2')
-
-    i.classList.add('bi')
-    i.classList.add('bi-x-square')
-    i.style.cursor = 'pointer'
-
-    li.append(i)
+const addTodo = (inputValue, event) => {
+    if(inputValue.length) {
+        todosContainer.innerHTML += getTodo(inputValue)
+        resetForm(event)
+    }
 }
 
-const clearInputBox = () => {
-    input.value = ''
-    input.focus()
+const removeTodo = clickedElement => {
+    const trashDataValue = clickedElement.dataset.trash
+    const todo = document.querySelector(`[data-todo="${trashDataValue}"]`)
+    
+    if(trashDataValue) {
+        todo.remove()
+    }
 }
 
-const addItemToTheList = () => {
-    ul.append(li)
+const manipulateClasses = (todos, addClass, removeClass) => {
+    todos.forEach(todo => {
+        todo.classList.add(addClass)
+        todo.classList.remove(removeClass)
+    })
 }
 
-form.addEventListener('submit', event => {
+const hideTodos = (todos, inputValue) => {
+    const todosToHide = filterTodos(todos, inputValue, true)
+
+    manipulateClasses(todosToHide, 'd-none', 'd-flex')
+}
+
+const showTodos = (todos, inputValue) => {
+    const todosToShow = filterTodos(todos, inputValue, false)
+
+    manipulateClasses(todosToShow, 'd-flex', 'd-none')
+}
+
+const filterTodos = (todos, inputValue, returnMatchedTodos) => todos
+    .filter(todo => {
+        const matchedTodo = todo.textContent.toLowerCase().includes(inputValue)
+        return returnMatchedTodos ? !matchedTodo : matchedTodo
+    })
+
+inputAddTodo.addEventListener('submit', event => {
     event.preventDefault()
 
-    if(!input.value) {
-        return
-    }
+    const inputValue = event.target.add.value.trim()
 
-    createItem()
-    clearInputBox()
-    addItemToTheList()
+    addTodo(inputValue, event)
 })
 
-ul.addEventListener('click', event => {
-    const clickedElementTagName = event.target.tagName
-    const clickedElementParent = event.target.parentElement
+todosContainer.addEventListener('click', event => {
+    const clickedElement = event.target
 
-    const elementIsAnIcon = clickedElementTagName === 'I'
+    removeTodo(clickedElement)
+})
 
-    if(elementIsAnIcon) {
-        clickedElementParent.remove()
-    }
+inputSearchTodo.addEventListener('input', event => {
+    const inputValue = event.target.value.trim().toLowerCase()
+    const todos = Array.from(todosContainer.children)
+
+    hideTodos(todos, inputValue)
+    showTodos(todos, inputValue)
 })
